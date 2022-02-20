@@ -24,7 +24,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text preset='h1' style={{color: colors.darkOrange}}>Hello.ddjjjjajja.</Text>
+      <Text preset='h1' style={{color: colors.darkOrange}}>Hello...</Text>
       <StatusBar style="auto" />
     </View>
   );
