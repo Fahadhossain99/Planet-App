@@ -1,10 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet, View, ActivityIndicator} from 'react-native';
 import { colors, spacing } from './src/theme';
 import { useFonts } from "expo-font";
 import Text from './src/components/text/text';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Home from './src/screens/Home';
+import Details from './src/screens/Details';
 
+
+const Stack = createNativeStackNavigator();
 
 
 
@@ -16,18 +22,19 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-    return <Text> Loading.... </Text>;
+    return <ActivityIndicator/>
   }
-
-
-
-
+  else{
   return (
-    <View style={styles.container}>
-      <Text preset='h1' style={{color: colors.darkOrange}}>Hello...</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
+        <Stack.Screen name="Details" component={Details} options={{headerShown: false}} />
+      </Stack.Navigator>
+      <StatusBar barStyle="light-content"/>
+    </NavigationContainer>
   );
+}
 }
 
 const styles = StyleSheet.create({
