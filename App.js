@@ -1,10 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, } from 'react-native';
+import { colors, spacing } from './src/theme';
+import { useFonts } from "expo-font";
+import Text from './src/components/text/text';
+
+
+
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "Antonio-Medium": require("./assets/fonts/Antonio-Medium.ttf"),
+    "Spartan-Bold": require("./assets/fonts/Spartan-Bold.ttf"),
+    "Spartan-Regular": require("./assets/fonts/Spartan-Regular.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return <Text> Loading.... </Text>;
+  }
+
+
+
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text preset='h1' style={{color: colors.darkOrange}}>Hello.ddjjjjajja.</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +33,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor:'#000',
     alignItems: 'center',
     justifyContent: 'center',
+  
   },
 });
