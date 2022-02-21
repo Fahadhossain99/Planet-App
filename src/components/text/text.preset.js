@@ -37,5 +37,9 @@ export const presets={
     h4:{
         ...BASE_BOLD,
         fontSize:13
+    },
+    small: {
+        ...BASE,
+        fontSize:11
     }
 }
