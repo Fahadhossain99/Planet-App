@@ -1,4 +1,4 @@
-import { View,StatusBar,Pressable,FlatList, TouchableOpacity,TextInput,} from "react-native";
+import { View,StatusBar, FlatList, TouchableOpacity,TextInput,} from "react-native";
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Text from '../components/text/text'
@@ -178,18 +178,19 @@ const styles = StyleSheet.create({
 
 export default function Home({ navigation }) {
   const[planetList,setPlanetList]= useState(PLANET_LIST)
-  // const [visible,setVisible]=useState(flase);
+  // const [visible,setVisible]=useState(false);
   
   const renderItem = ({item,index}) =>{
     const{ name,color}=item
 
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('Details',{planet:item })} style={styles.item}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Details", { planet: item })}
+        style={styles.item}
+      >
         <View style={styles.rowCentered}>
           <View style={[styles.circle, { backgroundColor: color }]} />
-          <Text style={styles.planetName}>
-            {name}
-          </Text>
+          <Text style={styles.planetName}>{name}</Text>
         </View>
         <AntDesign name="right" size={24} color={colors.grey} />
       </TouchableOpacity>
@@ -236,7 +237,7 @@ export default function Home({ navigation }) {
         )}
       />
 
-      <Pressable  style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}>
+      <TouchableOpacity  style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}>
         <View
           style={{
             width: 50,
@@ -249,7 +250,7 @@ export default function Home({ navigation }) {
         >
           <Feather name="filter" size={24} color="black" />
         </View>
-      </Pressable>
+      </TouchableOpacity>
 
       {/* <FilterModal
         visible={visible}
