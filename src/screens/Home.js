@@ -1,13 +1,15 @@
-import { View,StatusBar, FlatList, TouchableOpacity,TextInput,} from "react-native";
+import { View,StatusBar, FlatList, TouchableOpacity,TextInput, Dimensions} from "react-native";
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Text from '../components/text/text'
 import { colors } from '../theme'
 import PlanetHeader from '../components/planet-header'
 import { spacing } from './../theme/spacing';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import Modal from "react-native-modal";
+import { useWindowDimensions } from "react-native";
 
 
 
@@ -167,18 +169,30 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
+ 
+const FilterModal= ({visible,closeModal}) => {
+  const { height, width } = useWindowDimensions();
+  return (
+    <Modal
+      isVisible={visible}
+      swipeDirection={["down"]}
+      style={{ justifyContent: "flex-end" }}
+      onBackdropPress={closeModal}
+    >
+      <View
+      style={{backgroundColor:colors.darkGrey,height:height/2,borderRadius:30, margin:spacing[2]}}
+      >
 
-// const FilterModal = ({visible }) => {
-//   return(
-//     <Modal isVisible={visible}>
-      
-//     </Modal>
-//   )
-// }
+      </View>
+
+    </Modal>
+  );
+}
+
 
 export default function Home({ navigation }) {
-  const[planetList,setPlanetList]= useState(PLANET_LIST)
-  // const [visible,setVisible]=useState(false);
+  const[planetList,setPlanetList]= useState(PLANET_LIST);
+  const[visible,setVisible] = useState(false);
   
   const renderItem = ({item,index}) =>{
     const{ name,color}=item
@@ -237,7 +251,7 @@ export default function Home({ navigation }) {
         )}
       />
 
-      <TouchableOpacity  style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}>
+      <Pressable onPress={() => setVisible(true)} style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}>
         <View
           style={{
             width: 50,
@@ -250,11 +264,14 @@ export default function Home({ navigation }) {
         >
           <Feather name="filter" size={24} color="black" />
         </View>
-      </TouchableOpacity>
+      </Pressable>
 
-      {/* <FilterModal
-        visible={visible}
-      /> */}
+      <FilterModal 
+      visible={visible}
+        closeModal={() => setVisible(false)}
+      />
+
+     
 
       <StatusBar barStyle="light-content" />
     </SafeAreaView>
