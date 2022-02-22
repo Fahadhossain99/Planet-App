@@ -11,6 +11,7 @@ import { Feather } from "@expo/vector-icons";
 
 
 
+
 export const PLANET_LIST = [
   {
     name: "mercury",
@@ -167,8 +168,18 @@ const styles = StyleSheet.create({
   },
 });
 
+// const FilterModal = ({visible }) => {
+//   return(
+//     <Modal isVisible={visible}>
+      
+//     </Modal>
+//   )
+// }
+
 export default function Home({ navigation }) {
   const[planetList,setPlanetList]= useState(PLANET_LIST)
+  // const [visible,setVisible]=useState(flase);
+  
   const renderItem = ({item,index}) =>{
     const{ name,color}=item
 
@@ -225,7 +236,7 @@ export default function Home({ navigation }) {
         )}
       />
 
-      <Pressable style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}>
+      <Pressable  style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}>
         <View
           style={{
             width: 50,
@@ -239,6 +250,10 @@ export default function Home({ navigation }) {
           <Feather name="filter" size={24} color="black" />
         </View>
       </Pressable>
+
+      {/* <FilterModal
+        visible={visible}
+      /> */}
 
       <StatusBar barStyle="light-content" />
     </SafeAreaView>
