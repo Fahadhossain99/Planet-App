@@ -1,5 +1,5 @@
-import {View,StatusBar, Pressable,FlatList,TouchableOpacity} from 'react-native'
-import React from 'react'
+import { View,StatusBar,Pressable,FlatList, TouchableOpacity,TextInput,} from "react-native";
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Text from '../components/text/text'
 import { colors } from '../theme'
@@ -7,6 +7,8 @@ import PlanetHeader from '../components/planet-header'
 import { spacing } from './../theme/spacing';
 import { StyleSheet } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+
 
 
 export const PLANET_LIST = [
@@ -166,6 +168,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Home({ navigation }) {
+  const[planetList,setPlanetList]= useState(PLANET_LIST)
   const renderItem = ({item,index}) =>{
     const{ name,color}=item
 
@@ -181,17 +184,61 @@ export default function Home({ navigation }) {
       </TouchableOpacity>
     );
   }
+    
+  const searchFilter=(text) => {
+    const filteredList=PLANET_LIST.filter(item => {
+      const itemData =item.name.toUpperCase()
+      const userTypedText =text.toUpperCase()
+
+      return itemData.indexOf(userTypedText) > -1
+    })
+    setPlanetList(filteredList)
+  }
+
   return (
     <SafeAreaView style={{ backgroundColor: colors.black, flex: 1 }}>
       <PlanetHeader />
 
+      <TextInput
+        placeholder="Search Planet by name.."
+        placeholderTextColor={colors.white}
+        onChangeText={(text) => searchFilter(text)}
+        autoCorrect={false}
+        style={{
+          padding: spacing[4],
+          color: colors.white,
+          borderColor: colors.white,
+          borderWidth: 1,
+          borderRadius: 12,
+          marginHorizontal: spacing[4],
+          marginTop: spacing[4],
+        }}
+      />
+
       <FlatList
-        data={PLANET_LIST}
+        data={planetList}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.name}
-        contentContainerStyle={{padding: spacing[5]}}
-        ItemSeparatorComponent={() => <View style={{height:0.5, backgroundColor:colors.grey}}/>}
+        contentContainerStyle={{ padding: spacing[5] }}
+        ItemSeparatorComponent={() => (
+          <View style={{ height: 0.5, backgroundColor: colors.grey }} />
+        )}
       />
+
+      <Pressable style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}>
+        <View
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 25,
+            backgroundColor: colors.white,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Feather name="filter" size={24} color="black" />
+        </View>
+      </Pressable>
 
       <StatusBar barStyle="light-content" />
     </SafeAreaView>
