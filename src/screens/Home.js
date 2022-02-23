@@ -176,10 +176,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const FilterModal = ({ visible, closeModal,}) => {
+const FilterModal = ({ visible, closeModal,filterAction,resetFilter}) => {
   const { height, width } = useWindowDimensions();
   const [rotationTime, setRotationTime] = useState([0, 500]);
   const [radius, setRadius] = useState([5000, 15000]);
+  const onPressFilter=() => {
+    filterAction({rotationTime: rotationTime,radius:radius})
+    closeModal()
+  }
+  const onPressReset = () => {
+    resetFilter()
+    closeModal()
+  }
 
   return (
     <Modal
@@ -238,8 +246,8 @@ const FilterModal = ({ visible, closeModal,}) => {
           style={{ flex: 1, justifyContent: "flex-end", margin: spacing[4] }}
         >
           <View style={{ flexDirection: "row" }}>
-           <Button title="FILTER"/>
-           <Button title="RESET FILTER"/>
+           <Button onPress={onPressFilter} title="FILTER"/>
+           <Button onPress={onPressReset} title="RESET FILTER"/>
 
           
           </View>
@@ -280,6 +288,22 @@ export default function Home({ navigation }) {
     setPlanetList(filteredList);
   };
 
+const filterPlanets=(data)=>{
+ const{rotationTime,radius}=data;
+ const filteredList=PLANET_LIST.filter((item) =>
+ {
+   return (
+     item.rotationTime >= rotationTime[0] &&
+     item.rotationTime <= rotationTime[0] &&
+     item.radius >= radius[0] && item.radius <= radius[1]
+   ) 
+ })
+ setPlanetList(filteredList);
+}
+
+const onReset = () => {
+  setPlanetList(planetList)
+}
  
 
   return (
@@ -333,6 +357,9 @@ export default function Home({ navigation }) {
       <FilterModal
        visible={visible} 
       closeModal={() => setVisible(false)}
+      filterAction={filterPlanets}
+      resetFilter={onReset}
+
       
 
        />
@@ -341,3 +368,4 @@ export default function Home({ navigation }) {
     </SafeAreaView>
   );
 }
+

@@ -15,7 +15,7 @@ const PlanetSection = ({title,value}) => {
   )
 }
 
-export default function Details( {route }) {
+export default function Details( {route,navigation }) {
   const{planet}=route.params;
   const { surfaceImage, name, description, wikiLink, rotationTime ,revolutionTime,radius,avgTemp} = planet;
   return (
@@ -37,7 +37,7 @@ export default function Details( {route }) {
 
            <View style={{ flexDirection:'row',marginTop:spacing[8]}}>
           <Text>Source: </Text>
-          <Pressable onPress={() => Linking.openURL(wikiLink)} >
+          <Pressable onPress={() => { navigation.navigate("Web",{url:wikiLink})}} >
               <Text style={{ textDecorationLine:'underline'}}>Wikipedia</Text>
           </Pressable>
            </View>
