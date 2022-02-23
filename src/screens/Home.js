@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Button,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,6 +19,7 @@ import { Feather } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import { useWindowDimensions } from "react-native";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
+
 
 export const PLANET_LIST = [
   {
@@ -174,10 +176,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const FilterModal = ({ visible, closeModal }) => {
+const FilterModal = ({ visible, closeModal,}) => {
   const { height, width } = useWindowDimensions();
-  const [rotationTime,setRotationTime]=useState([0,500])
-  const [radius,setRadius]=useState([5000,15000])
+  const [rotationTime, setRotationTime] = useState([0, 500]);
+  const [radius, setRadius] = useState([5000, 15000]);
 
   return (
     <Modal
@@ -231,6 +233,17 @@ const FilterModal = ({ visible, closeModal }) => {
             />
           </View>
         </View>
+
+        <View
+          style={{ flex: 1, justifyContent: "flex-end", margin: spacing[4] }}
+        >
+          <View style={{ flexDirection: "row" }}>
+           <Button title="FILTER"/>
+           <Button title="RESET FILTER"/>
+
+          
+          </View>
+        </View>
       </View>
     </Modal>
   );
@@ -266,6 +279,8 @@ export default function Home({ navigation }) {
     });
     setPlanetList(filteredList);
   };
+
+ 
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.black, flex: 1 }}>
@@ -315,7 +330,12 @@ export default function Home({ navigation }) {
         </View>
       </Pressable>
 
-      <FilterModal visible={visible} closeModal={() => setVisible(false)} />
+      <FilterModal
+       visible={visible} 
+      closeModal={() => setVisible(false)}
+      
+
+       />
 
       <StatusBar barStyle="light-content" />
     </SafeAreaView>
