@@ -1,18 +1,23 @@
-import { View,StatusBar, FlatList, TouchableOpacity,TextInput, Dimensions} from "react-native";
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import Text from '../components/text/text'
-import { colors } from '../theme'
-import PlanetHeader from '../components/planet-header'
-import { spacing } from './../theme/spacing';
-import { StyleSheet, Pressable } from 'react-native';
+import {
+  View,
+  StatusBar,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+} from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Text from "../components/text/text";
+import { colors } from "../theme";
+import PlanetHeader from "../components/planet-header";
+import { spacing } from "./../theme/spacing";
+import { StyleSheet, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import { useWindowDimensions } from "react-native";
-
-
-
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 export const PLANET_LIST = [
   {
@@ -145,7 +150,6 @@ export const PLANET_LIST = [
   },
 ];
 
-
 const styles = StyleSheet.create({
   item: {
     flexDirection: "row",
@@ -169,9 +173,12 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
- 
-const FilterModal= ({visible,closeModal}) => {
+
+const FilterModal = ({ visible, closeModal }) => {
   const { height, width } = useWindowDimensions();
+  const [rotationTime,setRotationTime]=useState([0,500])
+  const [radius,setRadius]=useState([5000,15000])
+
   return (
     <Modal
       isVisible={visible}
@@ -180,22 +187,61 @@ const FilterModal= ({visible,closeModal}) => {
       onBackdropPress={closeModal}
     >
       <View
-      style={{backgroundColor:colors.darkGrey,height:height/2,borderRadius:30, margin:spacing[2]}}
+        style={{
+          backgroundColor: colors.darkGrey,
+          height: height / 2,
+          borderRadius: 30,
+          margin: spacing[2],
+        }}
       >
+        <View style={{ margin: spacing[5] }}>
+          <Text preset="h2">Filter</Text>
 
+          <View style={{ marginVertical: spacing[4] }}>
+            <Text>Filter by rotation time</Text>
+
+            <Text preset="h4" style={{ marginTop: spacing[4] }}>
+              {`rotationTime: ${rotationTime[0]}-${rotationTime[1]}`}
+            </Text>
+
+            <MultiSlider
+              values={rotationTime}
+              onValuesChange={(values) => setRotationTime(values)}
+              step={10}
+              min={0}
+              max={500}
+              containerStyle={{ marginHorizontal: spacing[3] }}
+            />
+          </View>
+
+          <View style={{ marginVertical: spacing[4] }}>
+            <Text>Filter by radius</Text>
+
+            <Text preset="h4" style={{ marginTop: spacing[4] }}>
+              {`Radius: ${radius[0]}-${radius[1]}`}
+            </Text>
+
+            <MultiSlider
+              values={radius}
+              onValuesChange={(values) => setRadius(values)}
+              step={100}
+              min={5000}
+              max={15000}
+              containerStyle={{ marginHorizontal: spacing[3] }}
+            />
+          </View>
+        </View>
       </View>
-
     </Modal>
   );
-}
-
+};
 
 export default function Home({ navigation }) {
-  const[planetList,setPlanetList]= useState(PLANET_LIST);
-  const[visible,setVisible] = useState(false);
-  
-  const renderItem = ({item,index}) =>{
-    const{ name,color}=item
+  const [planetList, setPlanetList] = useState(PLANET_LIST);
+  const [visible, setVisible] = useState(false);
+
+  const renderItem = ({ item, index }) => {
+    const { name, color } = item;
 
     return (
       <TouchableOpacity
@@ -209,17 +255,17 @@ export default function Home({ navigation }) {
         <AntDesign name="right" size={24} color={colors.grey} />
       </TouchableOpacity>
     );
-  }
-    
-  const searchFilter=(text) => {
-    const filteredList=PLANET_LIST.filter(item => {
-      const itemData =item.name.toUpperCase()
-      const userTypedText =text.toUpperCase()
+  };
 
-      return itemData.indexOf(userTypedText) > -1
-    })
-    setPlanetList(filteredList)
-  }
+  const searchFilter = (text) => {
+    const filteredList = PLANET_LIST.filter((item) => {
+      const itemData = item.name.toUpperCase();
+      const userTypedText = text.toUpperCase();
+
+      return itemData.indexOf(userTypedText) > -1;
+    });
+    setPlanetList(filteredList);
+  };
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.black, flex: 1 }}>
@@ -251,7 +297,10 @@ export default function Home({ navigation }) {
         )}
       />
 
-      <Pressable onPress={() => setVisible(true)} style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}>
+      <Pressable
+        onPress={() => setVisible(true)}
+        style={{ alignSelf: "flex-end", paddingRight: spacing[5] }}
+      >
         <View
           style={{
             width: 50,
@@ -266,12 +315,7 @@ export default function Home({ navigation }) {
         </View>
       </Pressable>
 
-      <FilterModal 
-      visible={visible}
-        closeModal={() => setVisible(false)}
-      />
-
-     
+      <FilterModal visible={visible} closeModal={() => setVisible(false)} />
 
       <StatusBar barStyle="light-content" />
     </SafeAreaView>
