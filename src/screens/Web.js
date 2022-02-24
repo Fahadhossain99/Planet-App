@@ -13,7 +13,7 @@ export default function Web({route}) {
      <PlanetHeader backButton={true}/>
        <WebView source={{ uri: url }} />
        <StatusBar barStyle="dark-content"/>
-     </SafeAre>
+     </SafeAreaView>
    );
   
 }
